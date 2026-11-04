@@ -1,0 +1,78 @@
+PHẦN 1: Nhận diện rủi ro và Quy trình xử lý sự cố
+1. Tình huống 1 (Email giả mạo GitHub)
+Loại tấn công: Phishing (Tấn công giả mạo) kết hợp Typosquatting (Mạo danh tên miền thông qua lỗi chính tả).
+Dấu hiệu giả mạo:
+Tên miền giả mạo: Sử dụng githuh-security.com (thay chữ b bằng chữ h nhằm đánh lừa thị giác).
+Kịch bản thao túng tâm lý (Social Engineering): Đe dọa khóa tài khoản để thúc ép nạn nhân truy cập link và khai báo mật khẩu.
+Khuyên áp dụng: Quy tắc KHÔNG click vào link lạ và KHÔNG cung cấp thông tin đăng nhập qua email.
+2. Tình huống 2 (Tải phần mềm Photoshop Crack)
+Loại cạm bẫy: Malware Delivery via Software Crack (Phát tán mã độc ẩn trong phần mềm lậu).
+Rủi ro từ việc tắt Windows Defender: Tắt trình diệt virus tức là gỡ bỏ lớp phòng thủ tự động của hệ điều hành, tạo điều kiện cho các loại mã độc nguy hiểm (như Trojan, Keylogger, InfoStealer) thực thi ngầm để thu thập token, cookie đăng nhập và source code.
+Khuyên áp dụng: Quy tắc KHÔNG tải/chạy phần mềm crack và KHÔNG tắt tính năng bảo vệ của hệ thống.
+3. Quy trình 4 Bước Cấp cứu Sự cố An ninh mạng
+Bước 1 – Isolation (Ngắt kết nối): Rút dây mạng LAN / tắt Wi-Fi ngay lập tức để ngắt kênh truyền thông của mã độc về máy chủ điều khiển (C&C Server).
+Bước 2 – Containment & Remediation (Quét diệt): Đưa hệ điều hành vào chế độ Safe Mode và khởi chạy phần mềm diệt virus chuyên dụng để cô lập, loại bỏ mã độc.
+Bước 3 – Credential Revocation (Đổi thông tin đăng nhập): Đổi toàn bộ mật khẩu, thu hồi các access token/session ID từ một thiết bị an toàn khác.
+Bước 4 – System Recovery (Khôi phục hệ thống): Cài đặt lại hệ điều hành (Clean Install) nếu hệ thống đã bị can thiệp sâu để đảm bảo xóa triệt để backdoor.
+PHẦN 2: Password Manager & Kiến trúc Zero-Knowledge
+1. Rủi ro từ việc dùng chung Mật khẩu (Credential Reuse)
+Loại tấn công: Credential Stuffing (Tấn công nhồi nhét thông tin đăng nhập).
+Hậu quả: Khi mật khẩu SmartCampus2026! của email nhóm bị lộ, kẻ tấn công sẽ tự động thử mật khẩu này trên GitHub tổ chức và Vercel, dẫn đến việc mất toàn bộ tài nguyên dự án cùng lúc.
+2. Nguyên lý Bảo mật Zero-Knowledge Architecture
+Dữ liệu mật khẩu của người dùng được mã hóa và giải mã hoàn toàn ở phía thiết bị client (Client-side encryption) trước khi đồng bộ lên cloud.
+Nhà cung cấp dịch vụ (như Bitwarden) chỉ lưu trữ các chuỗi mã hóa (ciphertext) và tuyệt đối không nắm giữ Master Password hay khóa giải mã. Kể cả khi server Bitwarden bị hacker thâm nhập, dữ liệu thu được vẫn không thể giải mã.
+3. Bảng cấu hình Password Generator chuẩn bảo mật
+Thông số cấu hình	Giá trị thiết lập
+Độ dài (Length)	≥16 ký tự
+Chữ hoa (Uppercase A–Z)	Bật (True)
+Chữ thường (Lowercase a–z)	Bật (True)
+Chữ số (Digits 0–9)	Bật (True)
+Ký tự đặc biệt (Symbols !@#$)	Bật (True)
+PHẦN 3: Xác thực 2 Yếu tố (2FA / TOTP)
+1. So sánh Authenticator App (TOTP) và SMS OTP
+Nên sử dụng Authenticator App vì SMS OTP tồn tại 2 nhược điểm chết người:
+SIM Swapping: Kẻ tấn công giả mạo danh tính để lừa nhà mạng chuyển quyền kiểm soát SIM điện thoại sang thiết bị khác.
+SS7 Vulnerability & IMSI Catcher: Giao thức viễn thông SMS không được mã hóa đầu-cuối, dễ bị chặn bắt/nghe lén tin nhắn chứa mã OTP.
+2. Các bước kích hoạt 2FA trên GitHub Tổ chức
+Đăng nhập tài khoản GitHub 
+→ Truy cập Settings 
+→ Chọn Password and authentication.
+Tại mục Two-factor authentication, chọn Enable two-factor authentication.
+Chọn phương thức xác thực qua ứng dụng (Set up using an authenticator app).
+Sử dụng ứng dụng Google Authenticator trên điện thoại để quét mã QR hiển thị.
+Nhập mã TOTP 6 chữ số từ ứng dụng vào màn hình xác nhận để hoàn tất.
+3. Quản lý Mã khôi phục dự phòng (Recovery Codes)
+Nơi NÊN lưu: In ra bản giấy cất vào két an toàn, hoặc lưu trong mục Note có mã hóa của Password Manager.
+Nơi KHÔNG NÊN lưu: Lưu dưới dạng file .txt thô trên màn hình Desktop, chụp ảnh lưu trong thư viện ảnh điện thoại, hoặc gửi qua tin nhắn chat/email.
+PHẦN 4: Quản lý Secrets và Quy trình Git Check
+1. Nhận diện Secrets bị hardcode
+Giá trị 1: API_KEY = "sk-proj-abc123456789"
+Giá trị 2: DB_PASSWORD = "SmartCampus@2026"
+2. Đoạn code refactor đọc qua Biến môi trường (config.js)
+JavaScript
+require('dotenv').config();
+const API_KEY = process.env.API_KEY;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+function connectDatabase() {
+  return connect(DB_PASSWORD);
+}
+3. Cấu hình các tệp tin quản lý môi trường
+File .env (Chứa secrets thật – Phải Ignore):
+Đoạn mã
+API_KEY=sk-proj-abc123456789
+DB_PASSWORD=SmartCampus@2026
+File .gitignore (Loại trừ file chứa secret):
+Đoạn mã
+node_modules/
+.env
+.env.local
+.env.*.local
+File .env.example (File mẫu an toàn để push lên Git):
+Đoạn mã
+API_KEY=
+DB_PASSWORD=
+4. Quy trình 4 Bước Kiểm tra trước khi Push Code
+Kiểm tra trạng thái Staging (git status): Đảm bảo file .env không xuất hiện trong danh sách các file sắp commit.
+Kiểm tra File loại trừ (.gitignore): Xác nhận dòng .env đã được liệt kê chính xác trong tệp .gitignore.
+Kiểm tra thay đổi mã nguồn (git diff): Rà soát lại từng thay đổi code để đảm bảo không còn chuỗi secret nào bị viết trực tiếp.
+Kiểm tra Tệp cấu hình mẫu (.env.example): Xác nhận tệp mẫu đã có đủ tên các biến môi trường nhưng để trống giá trị nhằm phục vụ việc clone dự án của các thành viên khác.
